@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/election-bracket/static/css/main.f855e6bc.css",
-    "main.js": "/election-bracket/static/js/main.e86d4184.js",
-    "static/js/453.f98c0de4.chunk.js": "/election-bracket/static/js/453.f98c0de4.chunk.js",
-    "static/media/logo.svg": "/election-bracket/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
-    "index.html": "/election-bracket/index.html",
-    "main.f855e6bc.css.map": "/election-bracket/static/css/main.f855e6bc.css.map",
-    "main.e86d4184.js.map": "/election-bracket/static/js/main.e86d4184.js.map",
-    "453.f98c0de4.chunk.js.map": "/election-bracket/static/js/453.f98c0de4.chunk.js.map"
+    "main.css": "/Election-Bracket/static/css/main.f855e6bc.css",
+    "main.js": "/Election-Bracket/static/js/main.269442b2.js",
+    "static/js/453.f98c0de4.chunk.js": "/Election-Bracket/static/js/453.f98c0de4.chunk.js",
+    "static/media/logo.svg": "/Election-Bracket/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/Election-Bracket/index.html",
+    "main.f855e6bc.css.map": "/Election-Bracket/static/css/main.f855e6bc.css.map",
+    "main.269442b2.js.map": "/Election-Bracket/static/js/main.269442b2.js.map",
+    "453.f98c0de4.chunk.js.map": "/Election-Bracket/static/js/453.f98c0de4.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.e86d4184.js"
+    "static/js/main.269442b2.js"
   ]
 }
