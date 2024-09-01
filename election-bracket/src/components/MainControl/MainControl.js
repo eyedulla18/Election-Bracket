@@ -1,0 +1,157 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import USAMap from '../USAMap/USAMap';
+import { useSelector, useDispatch } from 'react-redux'
+import { nextStateStatus } from '../../reducers/stateStatus.ts';
+import { useState } from 'react';
+import { stateList } from '../../common-library/stateList.ts';
+import { politicalParties } from '../../common-library/political-parties.js';
+import SmallStates from '../SmallStates/SmallStates.tsx';
+import Stack from '@mui/joy/Stack';
+import VoteTracker from '../VoteTracker/VoteTracker.tsx';
+import VotePercentageModal from '../VotePercentageModal/VotePercentageModal.tsx';
+import { swingStateList } from '../../common-library/swingStateList.ts';
+import FillSafeStates from '../FillSafeStates/FillSafeStates.tsx';
+import CongressionalDistrictStatesModal from '../CongressionalDistrictStates/CongressionalDistrictStates.tsx';
+import { congressionalElectoralStatesList, congressionalElectoralStateData } from '../../common-library/congressionalElectoralStates.ts';
+
+const MainControl = () => {
+  const [updatedState, setUpdatedState] = useState("");
+  const [open, setOpen] = useState(true);
+  const [openCongressionalElectoralModal, setOpenCongressionalElectoralModal] = useState(false);
+  const stateStatus = useSelector((state) => state)
+  const statePercentageBreakdown = useSelector((state) => state.stateStatus[updatedState + " breakdown"])
+
+  function stateClickedHandler(event) {
+    setUpdatedState(event.target.dataset.name)
+
+  }
+
+  function swingStateModalOnClick(event) {
+    setUpdatedState(event.target.dataset.name)
+    setOpen(true)
+  }
+
+  function congressionalElectoralStateModalOnClick(event) {
+    setUpdatedState(event.target.dataset.name)
+    setOpenCongressionalElectoralModal(true)
+  }
+
+  function renderCongressionalElectoralModal() {
+    if(updatedState=="" || congressionalElectoralStatesList.includes(updatedState)==false){
+      return
+    }
+    return (
+      <CongressionalDistrictStatesModal
+        openCongressionalElectoralModal={openCongressionalElectoralModal}
+        setOpenCongressionalElectoralModal={setOpenCongressionalElectoralModal}
+        stateName={updatedState}
+        numDistricts={congressionalElectoralStateData[updatedState].numDistricts}
+      >
+
+      </CongressionalDistrictStatesModal>
+    )
+  }
+
+  function displaySwingStateModal(stateName) {
+    if (swingStateList.includes(stateName)) {
+      return <VotePercentageModal
+        stateName={stateName}
+        open={open}
+        setOpen={setOpen}
+        statePercentageBreakdown={statePercentageBreakdown}
+      >
+      </VotePercentageModal>
+    }
+
+  }
+
+  function customize(stateStatus) {
+    var customizeMap = {}
+    for (var i = 0; i < stateList.length; ++i) {
+      if (stateStatus.stateStatus[stateList[i]] == politicalParties.republican) {
+        customizeMap[stateList[i]] = { fill: "#CC0000" }
+      }
+      else if (stateStatus.stateStatus[stateList[i]] == politicalParties.democrat) {
+        customizeMap[stateList[i]] = { fill: "#0000FF" }
+      }
+      else if (stateStatus.stateStatus[stateList[i]] == politicalParties.thirdParty) {
+        customizeMap[stateList[i]] = { fill: "#00FF00" }
+      }
+    }
+    for (var i = 0; i < swingStateList.length; ++i) {
+      if (swingStateList[i] in customizeMap) {
+        customizeMap[swingStateList[i]]['clickHandler'] = swingStateModalOnClick
+      }
+      else {
+        customizeMap[swingStateList[i]] = { clickHandler: swingStateModalOnClick }
+      }
+    }
+    for (var i = 0; i < congressionalElectoralStatesList.length; ++i) {
+      if (congressionalElectoralStatesList[i] in customizeMap) {
+        customizeMap[congressionalElectoralStatesList[i]]['clickHandler'] = congressionalElectoralStateModalOnClick
+      }
+      else {
+        customizeMap[congressionalElectoralStatesList[i]] = { clickHandler: congressionalElectoralStateModalOnClick }
+      }
+    }
+    return customizeMap
+  }
+
+  function updateStateStatus() {
+    if (updatedState != "" && swingStateList.includes(updatedState) == false && congressionalElectoralStatesList.includes(updatedState) == false) {
+      dispatch(nextStateStatus(updatedState))
+      setUpdatedState("")
+    }
+  }
+
+  const dispatch = useDispatch()
+  updateStateStatus()
+
+  return (
+    <div>
+      {renderCongressionalElectoralModal()}
+      {displaySwingStateModal(updatedState)}
+      <Stack
+        direction="column"
+        spacing={2}
+        sx={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <VoteTracker></VoteTracker>
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <USAMap
+            onClick={stateClickedHandler}
+            customize={customize(stateStatus)}
+          />
+          <Stack
+            direction="column"
+            spacing={2}
+            sx={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FillSafeStates></FillSafeStates>
+            <SmallStates></SmallStates>
+          </Stack>
+        </Stack>
+      </Stack>
+    </div>
+  )
+};
+
+MainControl.propTypes = {};
+
+MainControl.defaultProps = {};
+
+export default MainControl;

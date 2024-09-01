@@ -1,0 +1,1 @@
+export const smallStateList = ["Massachusetts", "Rhode Island", "Connecticut", "New Jersey", "Delaware", "Maryland", "District of Columbia"]
