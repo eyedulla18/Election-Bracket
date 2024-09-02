@@ -14,6 +14,15 @@ import { swingStateList } from '../../common-library/swingStateList.ts';
 import FillSafeStates from '../FillSafeStates/FillSafeStates.tsx';
 import CongressionalDistrictStatesModal from '../CongressionalDistrictStates/CongressionalDistrictStates.tsx';
 import { congressionalElectoralStatesList, congressionalElectoralStateData } from '../../common-library/congressionalElectoralStates.ts';
+import SubmitButton from '../SubmitButton/SubmitButton.tsx';
+import Card from '@mui/joy/Card';
+import { useColorScheme } from '@mui/joy/styles';
+import Button from '@mui/joy/Button';
+import Box from '@mui/joy/Box';
+import { Container } from '@mui/material';
+
+
+
 
 const MainControl = () => {
   const [updatedState, setUpdatedState] = useState("");
@@ -21,6 +30,7 @@ const MainControl = () => {
   const [openCongressionalElectoralModal, setOpenCongressionalElectoralModal] = useState(false);
   const stateStatus = useSelector((state) => state)
   const statePercentageBreakdown = useSelector((state) => state.stateStatus[updatedState + " breakdown"])
+  const { mode, setMode } = useColorScheme();
 
   function stateClickedHandler(event) {
     setUpdatedState(event.target.dataset.name)
@@ -38,7 +48,7 @@ const MainControl = () => {
   }
 
   function renderCongressionalElectoralModal() {
-    if(updatedState=="" || congressionalElectoralStatesList.includes(updatedState)==false){
+    if (updatedState == "" || congressionalElectoralStatesList.includes(updatedState) == false) {
       return
     }
     return (
@@ -70,13 +80,13 @@ const MainControl = () => {
     var customizeMap = {}
     for (var i = 0; i < stateList.length; ++i) {
       if (stateStatus.stateStatus[stateList[i]] == politicalParties.republican) {
-        customizeMap[stateList[i]] = { fill: "#CC0000" }
+        customizeMap[stateList[i]] = { fill: "#FF3333" }
       }
       else if (stateStatus.stateStatus[stateList[i]] == politicalParties.democrat) {
-        customizeMap[stateList[i]] = { fill: "#0000FF" }
+        customizeMap[stateList[i]] = { fill: "#0092CC" }
       }
       else if (stateStatus.stateStatus[stateList[i]] == politicalParties.thirdParty) {
-        customizeMap[stateList[i]] = { fill: "#00FF00" }
+        customizeMap[stateList[i]] = { fill: "#779933" }
       }
     }
     for (var i = 0; i < swingStateList.length; ++i) {
@@ -107,9 +117,11 @@ const MainControl = () => {
 
   const dispatch = useDispatch()
   updateStateStatus()
-
+  console.log(mode)
   return (
-    <div>
+    <Container maxWidth={false} disableGutters sx={{
+      bgcolor:'background.paper',
+    }}>
       {renderCongressionalElectoralModal()}
       {displaySwingStateModal(updatedState)}
       <Stack
@@ -118,9 +130,23 @@ const MainControl = () => {
         sx={{
           justifyContent: "center",
           alignItems: "center",
+          px: "20%"
         }}
       >
-        <VoteTracker></VoteTracker>
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <VoteTracker></VoteTracker>
+          <SubmitButton state={stateStatus}></SubmitButton>
+          <Button onClick={() => {
+            setMode(mode === 'dark' ? 'light' : 'dark')
+          }} />
+        </Stack>
         <Stack
           direction="row"
           spacing={2}
@@ -146,7 +172,7 @@ const MainControl = () => {
           </Stack>
         </Stack>
       </Stack>
-    </div>
+      </Container>
   )
 };
 

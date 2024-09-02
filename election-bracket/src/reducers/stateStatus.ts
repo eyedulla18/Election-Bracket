@@ -67,7 +67,7 @@ export const stateSlice = createSlice({
     "Nevada breakdown": {"Republican":0, "Democrat":0, "Third party": 0},
     "North Carolina breakdown": {"Republican":0, "Democrat":0, "Third party": 0},
     "Pennsylvania breakdown": {"Republican":0, "Democrat":0, "Third party": 0},
-    "Wisconson breakdown": {"Republican":0, "Democrat":0, "Third party": 0},
+    "Wisconsin breakdown": {"Republican":0, "Democrat":0, "Third party": 0},
     fillSolidState: false
 
   },

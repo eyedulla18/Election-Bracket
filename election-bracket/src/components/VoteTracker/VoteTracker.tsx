@@ -18,6 +18,7 @@ const VoteTracker: FC<VoteTrackerProps> = () => {
       sx={{
         justifyContent: "space-evenly",
         alignItems: "center",
+        color: 'text.primary'
       }}
     >
       <SlotCounter value={currentResults.Democrat} />
