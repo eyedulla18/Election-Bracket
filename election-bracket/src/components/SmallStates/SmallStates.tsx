@@ -1,22 +1,26 @@
 import React, { FC } from 'react';
-import Radio from '@mui/joy/Radio';
-import RadioGroup from '@mui/joy/RadioGroup';
 import { smallStateList } from '../../common-library/smallStateList.ts';
 import StateRadioButton from '../StateRadioButton/StateRadioButton.tsx';
+import List from '@mui/joy/List';
+import ListItem from '@mui/joy/ListItem';
 
 interface SmallStatesProps { }
-function renderSmallStateRadioButtons(){
+function renderSmallStateRadioButtons() {
   var radioList: any = []
   for (var i = 0; i < smallStateList.length; ++i) {
-    radioList.push(<StateRadioButton stateName={smallStateList[i]}></StateRadioButton>)
+    radioList.push(<ListItem><StateRadioButton stateName={smallStateList[i]}></StateRadioButton></ListItem>)
   }
   return radioList
 }
 
 const SmallStates: FC<SmallStatesProps> = () => {
-  const [justify, setJustify] = React.useState('');
-  return (<div>
-    {renderSmallStateRadioButtons()}
+  return (<div style={{maxHeight: '90vh', overflow: 'auto'}}>
+    <List variant="outlined"
+      sx={{
+        "--List-radius": "8px",
+      }}>
+      {renderSmallStateRadioButtons()}
+    </List>
   </div>
   )
 };

@@ -7,8 +7,28 @@ import MainControl from './components/MainControl/MainControl';
 import store from './app/store'
 import { Provider } from 'react-redux'
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
+import {
+  extendTheme as materialExtendTheme,
+  CssVarsProvider as MaterialCssVarsProvider,
+  THEME_ID as MATERIAL_THEME_ID,
+} from '@mui/material/styles';
+import { CssVarsProvider as JoyCssVarsProvider } from '@mui/joy/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
-const theme = extendTheme({
+
+const materialTheme = materialExtendTheme({
+  colorSchemes: {
+    dark: {
+      palette: {
+        background: {
+          paper: '#000000',
+        },
+      },
+    },
+  },
+});
+
+var theme = extendTheme({
   colorSchemes: {
     light: {
       palette: {
@@ -92,12 +112,19 @@ const theme = extendTheme({
   },
 });
 
+console.log("theme")
+console.log(theme)
+
+// theme['shadows'][1] = "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)"
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <CssVarsProvider theme={theme}>
-      <MainControl></MainControl>
-    </CssVarsProvider>
+    <MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
+      <JoyCssVarsProvider theme={theme}>
+        <MainControl></MainControl>
+      </JoyCssVarsProvider>
+    </MaterialCssVarsProvider>
   </Provider>
 );
 

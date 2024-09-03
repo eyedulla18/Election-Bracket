@@ -5,7 +5,7 @@ import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import Slider from '@mui/joy/Slider';
 import SlotCounter from 'react-slot-counter';
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import {specifyStateStatus} from '../../reducers/stateStatus.ts';
 import { updateVotePercentage } from '../../reducers/stateStatus.ts';
 
@@ -51,7 +51,7 @@ const VotePercentageModal: FC<VotePercentageModalProps> = (props) => {
     if(republicanPercentage> democratPercentage && republicanPercentage> thirdPartyPercentage){
       dispatch(specifyStateStatus({stateName, politicalParty: "R"}))
     }
-    else if(democratPercentage>republicanPercentage && democratPercentage>>thirdPartyPercentage){
+    else if(democratPercentage>republicanPercentage && democratPercentage>thirdPartyPercentage){
       dispatch(specifyStateStatus({stateName, politicalParty: "D"}))
     }
     else if(thirdPartyPercentage>democratPercentage && thirdPartyPercentage>republicanPercentage){
@@ -59,6 +59,7 @@ const VotePercentageModal: FC<VotePercentageModalProps> = (props) => {
     }
     else{
       dispatch(specifyStateStatus({stateName, politicalParty: "N"}))
+      console.log(republicanPercentage, democratPercentage, thirdPartyPercentage)
       console.log("could not find the party with the highest vote total. probably a tie need to handle")
     }
 

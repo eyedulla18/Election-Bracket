@@ -145,7 +145,7 @@ const FillSafeStates: FC<FillSafeStatesProps> = () => {
     <div>
       {warningPopup()}
       <Typography component="label" endDecorator={fillStateSwitch()}>
-        Fill safe states
+        Fill solid states
       </Typography>
     </div>
   );

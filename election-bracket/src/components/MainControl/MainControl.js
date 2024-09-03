@@ -14,13 +14,14 @@ import { swingStateList } from '../../common-library/swingStateList.ts';
 import FillSafeStates from '../FillSafeStates/FillSafeStates.tsx';
 import CongressionalDistrictStatesModal from '../CongressionalDistrictStates/CongressionalDistrictStates.tsx';
 import { congressionalElectoralStatesList, congressionalElectoralStateData } from '../../common-library/congressionalElectoralStates.ts';
-import SubmitButton from '../SubmitButton/SubmitButton.tsx';
-import Card from '@mui/joy/Card';
+import BottomAppBar from '../BottomAppBar/BottomAppBar.tsx';
 import { useColorScheme } from '@mui/joy/styles';
 import Button from '@mui/joy/Button';
-import Box from '@mui/joy/Box';
 import { Container } from '@mui/material';
-
+import { Grid } from '@mui/joy';
+import { useColorScheme as useJoyColorScheme } from '@mui/joy/styles';
+import { useColorScheme as useMaterialColorScheme } from '@mui/material/styles';
+import IntroModal from '../IntroModal/IntroModal.tsx';
 
 
 
@@ -28,9 +29,12 @@ const MainControl = () => {
   const [updatedState, setUpdatedState] = useState("");
   const [open, setOpen] = useState(true);
   const [openCongressionalElectoralModal, setOpenCongressionalElectoralModal] = useState(false);
+  const [openInfoModal, setOpenInfoModal] = useState(true);
   const stateStatus = useSelector((state) => state)
   const statePercentageBreakdown = useSelector((state) => state.stateStatus[updatedState + " breakdown"])
   const { mode, setMode } = useColorScheme();
+  const { materialmode, setMode: setMaterialMode } = useMaterialColorScheme();
+  const { setMode: setJoyMode } = useJoyColorScheme();
 
   function stateClickedHandler(event) {
     setUpdatedState(event.target.dataset.name)
@@ -120,8 +124,12 @@ const MainControl = () => {
   console.log(mode)
   return (
     <Container maxWidth={false} disableGutters sx={{
-      bgcolor:'background.paper',
+      bgcolor: 'background.paper',
+      height: '100%',
+      minHeight: '100vh',
+      py:'3%'
     }}>
+      <IntroModal open={openInfoModal} setOpen={setOpenInfoModal}></IntroModal>
       {renderCongressionalElectoralModal()}
       {displaySwingStateModal(updatedState)}
       <Stack
@@ -130,7 +138,6 @@ const MainControl = () => {
         sx={{
           justifyContent: "center",
           alignItems: "center",
-          px: "20%"
         }}
       >
         <Stack
@@ -142,37 +149,39 @@ const MainControl = () => {
           }}
         >
           <VoteTracker></VoteTracker>
-          <SubmitButton state={stateStatus}></SubmitButton>
-          <Button onClick={() => {
+          <BottomAppBar setOpenInfoModal={setOpenInfoModal} state={stateStatus}></BottomAppBar>
+          {/* <Button onClick={() => {
             setMode(mode === 'dark' ? 'light' : 'dark')
-          }} />
+          }} /> */}
         </Stack>
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <USAMap
-            onClick={stateClickedHandler}
-            customize={customize(stateStatus)}
-          />
-          <Stack
-            direction="column"
-            spacing={2}
-            sx={{
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <FillSafeStates></FillSafeStates>
-            <SmallStates></SmallStates>
-          </Stack>
-        </Stack>
+        <Grid container direction={'row'} sx={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
+          <Grid>
+            <USAMap
+              title={""}
+              onClick={stateClickedHandler}
+              customize={customize(stateStatus)}
+            />
+          </Grid>
+          <Grid>
+            <Stack
+              direction="column"
+              spacing={1}
+              sx={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <FillSafeStates></FillSafeStates>
+              <SmallStates></SmallStates>
+            </Stack>
+          </Grid>
+        </Grid>
+
       </Stack>
-      </Container>
+    </Container>
   )
 };
 

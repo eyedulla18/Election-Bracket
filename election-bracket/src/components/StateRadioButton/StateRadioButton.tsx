@@ -5,6 +5,7 @@ import Typography from '@mui/joy/Typography';
 import { useSelector, useDispatch } from 'react-redux'
 import { politicalParties } from '../../common-library/political-parties';
 import {specifyStateStatus} from '../../reducers/stateStatus.ts';
+import { electoralVotesMap } from '../../common-library/electoralVotes.ts';
 
 
 interface StateRadioButtonProps { 
@@ -38,7 +39,7 @@ const StateRadioButton: FC<StateRadioButtonProps> = (props) => {
       <Typography
         sx={{ fontWeight: 'lg', fontSize: 'sm' }}
       >
-        {props.title ? props.title : props.stateName}
+        {props.title ? props.title : (props.stateName + " " + electoralVotesMap[props.stateName])}
       </Typography>
       <RadioGroup
         orientation="horizontal"
@@ -46,10 +47,9 @@ const StateRadioButton: FC<StateRadioButtonProps> = (props) => {
         value={stateStatusToToggleStatus(stateStatus)}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
           dispatch(specifyStateStatus({stateName:props.stateName, politicalParty: event.target.value}))
-          // setStateRadioStatus(event.target.value)
         }
         sx={{
-          minHeight: 48,
+          minHeight: 36,
           padding: '4px',
           borderRadius: '12px',
           bgcolor: 'neutral.softBg',
