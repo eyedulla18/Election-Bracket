@@ -13,7 +13,6 @@ import DemocraticIcon from "../../images/Democratic_Disc.png"
 import RepublicanIcon from "../../images/Republican_Disc.png"
 import GreenIcon from "../../images/Green_Disc.png"
 import Stack from '@mui/joy/Stack';
-import TestIcon from "../../images/test.jpg"
 import Box from '@mui/joy/Box';
 
 
@@ -52,9 +51,9 @@ const StateRadioButton: FC<StateRadioButtonProps> = (props) => {
 
   return (
     <Box>
-    <Card size="sm" variant='soft'>
+    <Card size="sm" variant='soft' sx={{backgroundColor:"var(--joy-palette-neutral-800, #171A1C)"}}>
       <Typography
-        sx={{ fontWeight: 'lg', fontSize: 'sm' }}
+        sx={{ color:'text.contrastText', fontWeight: 'lg', fontSize: 'sm' }}
       >
         {props.title ? props.title : (props.stateName + "(" + electoralVotesMap[props.stateName]) +")"}
       </Typography>

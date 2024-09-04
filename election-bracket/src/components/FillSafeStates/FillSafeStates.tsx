@@ -11,8 +11,6 @@ import Modal from '@mui/joy/Modal'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { useSelector, useDispatch } from 'react-redux'
 import {updateFillSolidState, specifyStateStatus} from '../../reducers/stateStatus.ts';
-// import { swingStateList } from '../../common-library/swingStateList.ts';
-// import { stateList } from '../../common-library/stateList.ts';
 import { democratStates, republicanStates } from '../../common-library/statePoliticalParties.js';
 
 
@@ -20,7 +18,9 @@ import { democratStates, republicanStates } from '../../common-library/statePoli
 interface FillSafeStatesProps { }
 
 const FillSafeStates: FC<FillSafeStatesProps> = () => {
-  const [checked, setChecked] = React.useState<boolean>(false);
+  // const [checked, setChecked] = React.useState<boolean>(true);
+  const checked = useSelector((state:any) => state.stateStatus.fillSolidState)
+
   const [warningOpen, setWarningOpen] = React.useState<boolean>(false);
   const dispatch = useDispatch()
 
@@ -52,7 +52,7 @@ const FillSafeStates: FC<FillSafeStatesProps> = () => {
   function acceptWarningHandler() {
     dispatch(updateFillSolidState())
     setWarningOpen(false)
-    setChecked(!checked)
+    // setChecked(!checked)
 
     if(checked==false){
       updateStateDefault() 

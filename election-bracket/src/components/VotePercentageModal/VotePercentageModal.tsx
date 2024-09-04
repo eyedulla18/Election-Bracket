@@ -6,16 +6,17 @@ import Typography from '@mui/joy/Typography';
 import Slider from '@mui/joy/Slider';
 import SlotCounter from 'react-slot-counter';
 import { useDispatch } from 'react-redux'
-import {specifyStateStatus} from '../../reducers/stateStatus.ts';
+import { specifyStateStatus } from '../../reducers/stateStatus.ts';
 import { updateVotePercentage } from '../../reducers/stateStatus.ts';
+import Snackbar, { SnackbarOrigin } from '@mui/joy/Snackbar';
 
 
 interface VotePercentageModalProps {
-  stateName:string
-  open:Boolean
+  stateName: string
+  open: Boolean
   setOpen,
   statePercentageBreakdown,
- }
+}
 const marks = [
   {
     value: 0,
@@ -41,35 +42,49 @@ const marks = [
 
 const VotePercentageModal: FC<VotePercentageModalProps> = (props) => {
   const dispatch = useDispatch()
-  const republicanPercentage:number = props.statePercentageBreakdown.Republican
-  const democratPercentage:number = props.statePercentageBreakdown.Democrat
-  const thirdPartyPercentage:number = props.statePercentageBreakdown["Third party"]
+  const republicanPercentage: number = props.statePercentageBreakdown.Republican
+  const democratPercentage: number = props.statePercentageBreakdown.Democrat
+  const thirdPartyPercentage: number = props.statePercentageBreakdown["Third party"]
   const stateName = props.stateName
 
-  function closeModalHandler(){
+  function errorSnackBar(){
+    const republicanWin = republicanPercentage > democratPercentage && republicanPercentage > thirdPartyPercentage
+    const democraticWin = democratPercentage > republicanPercentage && democratPercentage > thirdPartyPercentage
+    const thirdPartyWin = thirdPartyPercentage > democratPercentage && thirdPartyPercentage > republicanPercentage
+    return (
+      <Snackbar
+        color='danger'
+        open={!republicanWin && !democraticWin && !thirdPartyWin}
+      >
+        Adjust vote breakdown to select single winner
+      </Snackbar>
+    )
+  }
 
-    if(republicanPercentage> democratPercentage && republicanPercentage> thirdPartyPercentage){
-      dispatch(specifyStateStatus({stateName, politicalParty: "R"}))
+  function closeModalHandler() {
+
+    if (republicanPercentage > democratPercentage && republicanPercentage > thirdPartyPercentage) {
+      dispatch(specifyStateStatus({ stateName, politicalParty: "R" }))
     }
-    else if(democratPercentage>republicanPercentage && democratPercentage>thirdPartyPercentage){
-      dispatch(specifyStateStatus({stateName, politicalParty: "D"}))
+    else if (democratPercentage > republicanPercentage && democratPercentage > thirdPartyPercentage) {
+      dispatch(specifyStateStatus({ stateName, politicalParty: "D" }))
     }
-    else if(thirdPartyPercentage>democratPercentage && thirdPartyPercentage>republicanPercentage){
-      dispatch(specifyStateStatus({stateName, politicalParty: "3rd"}))
+    else if (thirdPartyPercentage > democratPercentage && thirdPartyPercentage > republicanPercentage) {
+      dispatch(specifyStateStatus({ stateName, politicalParty: "3rd" }))
     }
-    else{
-      dispatch(specifyStateStatus({stateName, politicalParty: "N"}))
+    else {
+      dispatch(specifyStateStatus({ stateName, politicalParty: "N" }))
       console.log(republicanPercentage, democratPercentage, thirdPartyPercentage)
       console.log("could not find the party with the highest vote total. probably a tie need to handle")
     }
 
-    dispatch(updateVotePercentage({stateName:stateName, democrat:democratPercentage, republican:republicanPercentage, thirdParty:thirdPartyPercentage}))
+    dispatch(updateVotePercentage({ stateName: stateName, democrat: democratPercentage, republican: republicanPercentage, thirdParty: thirdPartyPercentage }))
 
     props.setOpen(false)
   }
 
-  function percentageTotal(){
-    return Math.round(((republicanPercentage+democratPercentage+thirdPartyPercentage)*1000))/1000
+  function percentageTotal() {
+    return Math.round(((republicanPercentage + democratPercentage + thirdPartyPercentage) * 1000)) / 1000
   }
 
   return (
@@ -84,6 +99,7 @@ const VotePercentageModal: FC<VotePercentageModalProps> = (props) => {
         variant="outlined"
         sx={{ maxWidth: 500, borderRadius: 'md', p: 3, boxShadow: 'lg' }}
       >
+        {errorSnackBar()}
         <ModalClose variant="plain" sx={{ m: 1 }} />
         <Typography
           component="h2"
@@ -95,10 +111,10 @@ const VotePercentageModal: FC<VotePercentageModalProps> = (props) => {
           {props.stateName} Vote Breakdown Prediction
         </Typography>
         <Typography id="modal-desc" textColor="text.tertiary">
-          Make sure to use <code>aria-labelledby</code> on the modal dialog with an
-          optional <code>aria-describedby</code> attribute. Current vote total: 
-          <SlotCounter value={percentageTotal()} />%
-          </Typography>
+          <code>
+            Current vote total: <SlotCounter value={percentageTotal()} />%
+          </code>
+        </Typography>
         <Slider
           aria-label="Always visible"
           color="primary"
@@ -106,8 +122,8 @@ const VotePercentageModal: FC<VotePercentageModalProps> = (props) => {
           step={0.010}
           marks={marks}
           valueLabelDisplay="auto"
-          onChangeCommitted={(event, newValue)=>{
-            dispatch(updateVotePercentage({stateName:stateName, democrat:newValue as number, republican:republicanPercentage, thirdParty:thirdPartyPercentage}))
+          onChangeCommitted={(event, newValue) => {
+            dispatch(updateVotePercentage({ stateName: stateName, democrat: newValue as number, republican: republicanPercentage, thirdParty: thirdPartyPercentage }))
           }}
         />
         <Slider
@@ -117,8 +133,8 @@ const VotePercentageModal: FC<VotePercentageModalProps> = (props) => {
           step={0.010}
           marks={marks}
           valueLabelDisplay="auto"
-          onChangeCommitted={(event, newValue)=>{
-            dispatch(updateVotePercentage({stateName:stateName, democrat:democratPercentage, republican:newValue as number, thirdParty:thirdPartyPercentage}))
+          onChangeCommitted={(event, newValue) => {
+            dispatch(updateVotePercentage({ stateName: stateName, democrat: democratPercentage, republican: newValue as number, thirdParty: thirdPartyPercentage }))
           }}
         />
         <Slider
@@ -128,8 +144,8 @@ const VotePercentageModal: FC<VotePercentageModalProps> = (props) => {
           step={0.010}
           marks={marks}
           valueLabelDisplay="auto"
-          onChangeCommitted={(event, newValue)=>{
-            dispatch(updateVotePercentage({stateName:stateName, democrat:democratPercentage, republican:republicanPercentage, thirdParty:newValue as number}))
+          onChangeCommitted={(event, newValue) => {
+            dispatch(updateVotePercentage({ stateName: stateName, democrat: democratPercentage, republican: republicanPercentage, thirdParty: newValue as number }))
           }}
         />
 

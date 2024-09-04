@@ -21,7 +21,7 @@ const VoteTracker: FC<VoteTrackerProps> = () => {
         sx={{
           justifyContent: "space-evenly",
           alignItems: "center",
-          color: 'text.primary'
+          color: 'text.contrastText'
         }}
       >
         <Box sx={{p:1, borderRadius: 5, bgcolor:'background.paper', color: "#0092CC" }}><SlotCounter value={currentResults.Democrat} /></Box>

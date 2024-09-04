@@ -6,7 +6,7 @@ import { nextStateStatus } from '../../reducers/stateStatus.ts';
 import { useState } from 'react';
 import { stateList } from '../../common-library/stateList.ts';
 import { politicalParties } from '../../common-library/political-parties.js';
-import SmallStates from '../SmallStates/SmallStates.tsx';
+import SelectorListView from '../SelectorListView/SelectorListView.tsx';
 import Stack from '@mui/joy/Stack';
 import VoteTracker from '../VoteTracker/VoteTracker.tsx';
 import VotePercentageModal from '../VotePercentageModal/VotePercentageModal.tsx';
@@ -21,6 +21,13 @@ import { useColorScheme as useJoyColorScheme } from '@mui/joy/styles';
 import { useColorScheme as useMaterialColorScheme } from '@mui/material/styles';
 import IntroModal from '../IntroModal/IntroModal.tsx';
 import SettingsModal from '../SettingsModal/SettingsModal.tsx';
+import { congressionalElectoralDistricts } from '../../common-library/congressionalElectoralStates.ts'
+import Tabs from '@mui/joy/Tabs';
+import TabList from '@mui/joy/TabList';
+import Tab, { tabClasses } from '@mui/joy/Tab';
+import TabPanel from '@mui/joy/TabPanel';
+import { smallStateList } from '../../common-library/smallStateList.ts'
+
 
 
 
@@ -138,6 +145,8 @@ const MainControl = () => {
       <IntroModal open={openInfoModal} setOpen={setOpenInfoModal}></IntroModal>
       {renderCongressionalElectoralModal()}
       {displaySwingStateModal(updatedState)}
+      <VoteTracker></VoteTracker>
+      <BottomAppBar setOpenInfoModal={setOpenInfoModal} setOpenSettingsModal={setOpenSettingsModal} state={stateStatus}></BottomAppBar>
       <Stack
         direction="column"
         spacing={2}
@@ -146,17 +155,6 @@ const MainControl = () => {
           alignItems: "center",
         }}
       >
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <VoteTracker></VoteTracker>
-          <BottomAppBar setOpenInfoModal={setOpenInfoModal} setOpenSettingsModal={setOpenSettingsModal} state={stateStatus}></BottomAppBar>
-        </Stack>
         <Grid container direction={'row'} sx={{
           justifyContent: "center",
           alignItems: "center",
@@ -168,7 +166,41 @@ const MainControl = () => {
               customize={customize(stateStatus)}
             />
           </Grid>
-          <SmallStates></SmallStates>
+          <Tabs sx={{mt: "5vh",}}>
+            <TabList
+              tabFlex={"auto"}
+              disableUnderline
+              sx={{
+                p: 0.5,
+                gap: 0.5,
+                borderRadius: 'xl',
+                bgcolor: 'background.level1',
+                [`& .${tabClasses.root}[aria-selected="true"]`]: {
+                  boxShadow: 'sm',
+                  bgcolor: 'background.surface',
+                },
+              }}
+            >
+              <Tab
+                variant="plain"
+                color="neutral"
+                disableIndicator>
+                Small States
+              </Tab>
+              <Tab
+                variant="plain"
+                color="neutral"
+                disableIndicator>
+                All States
+              </Tab>
+            </TabList>
+            <TabPanel value={0}>
+              <SelectorListView stateList={smallStateList}></SelectorListView>
+            </TabPanel>
+            <TabPanel value={1}>
+              <SelectorListView stateList={stateList.concat(congressionalElectoralDistricts)}></SelectorListView>
+            </TabPanel>
+          </Tabs>
         </Grid>
 
       </Stack>
