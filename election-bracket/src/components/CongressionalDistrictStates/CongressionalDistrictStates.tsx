@@ -21,7 +21,7 @@ const CongressionalDistrictStatesModal: FC<CongressionalDistrictStatesModalProps
       segmentedControls.push(<Grid><StateRadioButton stateName={props.stateName+i} title={"District "+i}></StateRadioButton></Grid>)
     }
     return (
-      <Grid container spacing={1} sx={{ flexGrow: 1, mt:1 }}>
+      <Grid container spacing={1} justifyContent="center" sx={{ flexGrow: 1, mt:1 }}>
         {segmentedControls}
       </Grid>
     )

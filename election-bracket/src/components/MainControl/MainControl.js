@@ -11,17 +11,16 @@ import Stack from '@mui/joy/Stack';
 import VoteTracker from '../VoteTracker/VoteTracker.tsx';
 import VotePercentageModal from '../VotePercentageModal/VotePercentageModal.tsx';
 import { swingStateList } from '../../common-library/swingStateList.ts';
-import FillSafeStates from '../FillSafeStates/FillSafeStates.tsx';
 import CongressionalDistrictStatesModal from '../CongressionalDistrictStates/CongressionalDistrictStates.tsx';
 import { congressionalElectoralStatesList, congressionalElectoralStateData } from '../../common-library/congressionalElectoralStates.ts';
 import BottomAppBar from '../BottomAppBar/BottomAppBar.tsx';
-import { useColorScheme } from '@mui/joy/styles';
 import Button from '@mui/joy/Button';
 import { Container } from '@mui/material';
 import { Grid } from '@mui/joy';
 import { useColorScheme as useJoyColorScheme } from '@mui/joy/styles';
 import { useColorScheme as useMaterialColorScheme } from '@mui/material/styles';
 import IntroModal from '../IntroModal/IntroModal.tsx';
+import SettingsModal from '../SettingsModal/SettingsModal.tsx';
 
 
 
@@ -30,11 +29,12 @@ const MainControl = () => {
   const [open, setOpen] = useState(true);
   const [openCongressionalElectoralModal, setOpenCongressionalElectoralModal] = useState(false);
   const [openInfoModal, setOpenInfoModal] = useState(true);
+  const [openSettingsModal, setOpenSettingsModal] = useState(false);
   const stateStatus = useSelector((state) => state)
   const statePercentageBreakdown = useSelector((state) => state.stateStatus[updatedState + " breakdown"])
-  const { mode, setMode } = useColorScheme();
-  const { materialmode, setMode: setMaterialMode } = useMaterialColorScheme();
+  const { mode, setMode: setMaterialMode } = useMaterialColorScheme();
   const { setMode: setJoyMode } = useJoyColorScheme();
+  console.log(mode)
 
   function stateClickedHandler(event) {
     setUpdatedState(event.target.dataset.name)
@@ -122,13 +122,19 @@ const MainControl = () => {
   const dispatch = useDispatch()
   updateStateStatus()
   console.log(mode)
+  if (mode == 'light') {
+    setJoyMode(mode === 'dark' ? 'light' : 'dark')
+    setMaterialMode(mode === 'dark' ? 'light' : 'dark')
+  }
+
   return (
     <Container maxWidth={false} disableGutters sx={{
       bgcolor: 'background.paper',
       height: '100%',
       minHeight: '100vh',
-      py:'3%'
+      py: '3%'
     }}>
+      <SettingsModal open={openSettingsModal} setOpen={setOpenSettingsModal}></SettingsModal>
       <IntroModal open={openInfoModal} setOpen={setOpenInfoModal}></IntroModal>
       {renderCongressionalElectoralModal()}
       {displaySwingStateModal(updatedState)}
@@ -149,10 +155,7 @@ const MainControl = () => {
           }}
         >
           <VoteTracker></VoteTracker>
-          <BottomAppBar setOpenInfoModal={setOpenInfoModal} state={stateStatus}></BottomAppBar>
-          {/* <Button onClick={() => {
-            setMode(mode === 'dark' ? 'light' : 'dark')
-          }} /> */}
+          <BottomAppBar setOpenInfoModal={setOpenInfoModal} setOpenSettingsModal={setOpenSettingsModal} state={stateStatus}></BottomAppBar>
         </Stack>
         <Grid container direction={'row'} sx={{
           justifyContent: "center",
@@ -165,19 +168,7 @@ const MainControl = () => {
               customize={customize(stateStatus)}
             />
           </Grid>
-          <Grid>
-            <Stack
-              direction="column"
-              spacing={1}
-              sx={{
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <FillSafeStates></FillSafeStates>
-              <SmallStates></SmallStates>
-            </Stack>
-          </Grid>
+          <SmallStates></SmallStates>
         </Grid>
 
       </Stack>

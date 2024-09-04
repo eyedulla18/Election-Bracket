@@ -5,11 +5,13 @@ import AppBar from '@mui/material/AppBar';
 import Tooltip from '@mui/joy/Tooltip';
 import IconButton from '@mui/joy/IconButton';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { Stack } from '@mui/joy';
 
 interface BottomAppBarProps {
   state: string
   setOpenInfoModal
+  setOpenSettingsModal
 }
 
 const BottomAppBar: FC<BottomAppBarProps> = (props) => {
@@ -37,7 +39,11 @@ const BottomAppBar: FC<BottomAppBarProps> = (props) => {
       sx={{ top: 'auto', bottom: "4vh", right: "4vw", justifyContent: "space-evenly", alignItems: "end" }}>
       <Stack direction="row"
       >
-        <IconButton aria-label="Open in new tab" component="a" href="#as-link" onClick={()=>props.setOpenInfoModal(true)}>
+        <IconButton onClick={()=>props.setOpenSettingsModal(true)}>
+          <SettingsOutlinedIcon></SettingsOutlinedIcon>
+        </IconButton>
+
+        <IconButton onClick={()=>props.setOpenInfoModal(true)}>
           <InfoOutlinedIcon></InfoOutlinedIcon>
         </IconButton>
         <Tooltip
