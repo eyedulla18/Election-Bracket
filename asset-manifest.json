@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.285d03e7.css",
-    "main.js": "./static/js/main.486e3081.js",
+    "main.js": "./static/js/main.ee209692.js",
     "static/js/453.a7defaaf.chunk.js": "./static/js/453.a7defaaf.chunk.js",
     "static/media/Republican_Disc.png": "./static/media/Republican_Disc.f469d297024d95c86ebb.png",
     "static/media/Democratic_Disc.png": "./static/media/Democratic_Disc.24a6b66d085e1b2f0e3a.png",
@@ -9,11 +9,11 @@
     "static/media/logo.svg": "./static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "./index.html",
     "main.285d03e7.css.map": "./static/css/main.285d03e7.css.map",
-    "main.486e3081.js.map": "./static/js/main.486e3081.js.map",
+    "main.ee209692.js.map": "./static/js/main.ee209692.js.map",
     "453.a7defaaf.chunk.js.map": "./static/js/453.a7defaaf.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.285d03e7.css",
-    "static/js/main.486e3081.js"
+    "static/js/main.ee209692.js"
   ]
 }
