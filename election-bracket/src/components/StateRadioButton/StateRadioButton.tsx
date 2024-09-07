@@ -51,7 +51,7 @@ const StateRadioButton: FC<StateRadioButtonProps> = (props) => {
 
   return (
     <Box>
-    <Card size="sm" variant='soft' sx={{backgroundColor:"var(--joy-palette-neutral-800, #171A1C)"}}>
+    <Card size="sm" variant='soft'>
       <Typography
         sx={{ color:'text.contrastText', fontWeight: 'lg', fontSize: 'sm' }}
       >
@@ -61,7 +61,7 @@ const StateRadioButton: FC<StateRadioButtonProps> = (props) => {
         direction="row"
         spacing={2}
         sx={{
-          justifyContent: "flex-end",
+          justifyContent: "center",
           alignItems: "center",
         }}
       >

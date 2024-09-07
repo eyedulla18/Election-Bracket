@@ -7,6 +7,7 @@ import IconButton from '@mui/joy/IconButton';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { Stack } from '@mui/joy';
+import {testApiCall, submitMap} from '../../common-library/requestHandler.ts'
 
 interface BottomAppBarProps {
   state: string
@@ -56,7 +57,7 @@ const BottomAppBar: FC<BottomAppBarProps> = (props) => {
           <span>
             <Button
               disabled={disabledButtonState()}
-              onClick={function () { }}
+              onClick={function () { submitMap(props.state)}}
               size="md"
               variant="solid"
             >

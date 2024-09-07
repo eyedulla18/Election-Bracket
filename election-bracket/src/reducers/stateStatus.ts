@@ -61,13 +61,13 @@ export const stateSlice = createSlice({
     "Wisconsin": politicalParties.neutral,
     "Wyoming": politicalParties.republican,
     "District of Columbia": politicalParties.democrat,
-    "Arizona breakdown": {"Republican":0, "Democrat":0, "Third party": 0},
-    "Georgia breakdown": {"Republican":0, "Democrat":0, "Third party": 0},
-    "Michigan breakdown": {"Republican":0, "Democrat":0, "Third party": 0},
-    "Nevada breakdown": {"Republican":0, "Democrat":0, "Third party": 0},
-    "North Carolina breakdown": {"Republican":0, "Democrat":0, "Third party": 0},
-    "Pennsylvania breakdown": {"Republican":0, "Democrat":0, "Third party": 0},
-    "Wisconsin breakdown": {"Republican":0, "Democrat":0, "Third party": 0},
+    "Arizona margin": 99,
+    "Georgia margin": 99,
+    "Michigan margin": 99,
+    "Nevada margin": 99,
+    "North Carolina margin": 99,
+    "Pennsylvania margin": 99,
+    "Wisconsin margin": 99,
     fillSolidState: true
 
   },
@@ -110,6 +110,9 @@ export const stateSlice = createSlice({
       state[action.payload.stateName +" breakdown"].Republican = action.payload.republican
       state[action.payload.stateName +" breakdown"]["Third party"] = action.payload.thirdParty
     },
+    updateMarginofVictory: (state, action: PayloadAction<{stateName:string, margin:number}>) => {
+      state[action.payload.stateName +" margin"] = action.payload.margin
+    },
     updateFillSolidState: (state) => {
       console.log("updating fill solid state")
       state.fillSolidState = !state.fillSolidState
@@ -119,6 +122,6 @@ export const stateSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { nextStateStatus, specifyStateStatus, updateVotePercentage, updateFillSolidState } = stateSlice.actions
+export const { nextStateStatus, specifyStateStatus, updateVotePercentage, updateFillSolidState, updateMarginofVictory } = stateSlice.actions
 
 export default stateSlice.reducer

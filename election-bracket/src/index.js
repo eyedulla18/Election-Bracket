@@ -44,14 +44,15 @@ var theme = extendTheme({
         },
         background: {
           paper: '#000000',
+          // level1: "#880808"
+          surface:"#0B0D0E"
         },
       },
     },
   },
 });
 
-console.log("theme")
-console.log(theme)
+localStorage.clear()
 
 // theme['shadows'][1] = "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)"
 
@@ -59,7 +60,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
     <MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
-      <JoyCssVarsProvider theme={theme}>
+      <JoyCssVarsProvider defaultMode='dark' theme={theme}>
         <MainControl></MainControl>
       </JoyCssVarsProvider>
     </MaterialCssVarsProvider>

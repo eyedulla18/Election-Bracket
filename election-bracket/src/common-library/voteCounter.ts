@@ -16,7 +16,7 @@ export default function tallyCurrentResults(state){
         if(partySelection==politicalParties.democrat){
             democrat += stateElectoralVotes
         }
-        if(partySelection==politicalParties.republican){
+      if(partySelection==politicalParties.republican){
             republican += stateElectoralVotes
         }
         if(partySelection==politicalParties.thirdParty){

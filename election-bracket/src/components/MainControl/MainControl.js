@@ -16,7 +16,7 @@ import { congressionalElectoralStatesList, congressionalElectoralStateData } fro
 import BottomAppBar from '../BottomAppBar/BottomAppBar.tsx';
 import Button from '@mui/joy/Button';
 import { Container } from '@mui/material';
-import { Grid } from '@mui/joy';
+import { Card, Grid } from '@mui/joy';
 import { useColorScheme as useJoyColorScheme } from '@mui/joy/styles';
 import { useColorScheme as useMaterialColorScheme } from '@mui/material/styles';
 import IntroModal from '../IntroModal/IntroModal.tsx';
@@ -27,8 +27,8 @@ import TabList from '@mui/joy/TabList';
 import Tab, { tabClasses } from '@mui/joy/Tab';
 import TabPanel from '@mui/joy/TabPanel';
 import { smallStateList } from '../../common-library/smallStateList.ts'
-
-
+import MarginOfVictoryInput from '../MarginOfVictoryInput/MarginOfVictoryInput.tsx';
+import Box from '@mui/joy/Box';
 
 
 const MainControl = () => {
@@ -41,7 +41,6 @@ const MainControl = () => {
   const statePercentageBreakdown = useSelector((state) => state.stateStatus[updatedState + " breakdown"])
   const { mode, setMode: setMaterialMode } = useMaterialColorScheme();
   const { setMode: setJoyMode } = useJoyColorScheme();
-  console.log(mode)
 
   function stateClickedHandler(event) {
     setUpdatedState(event.target.dataset.name)
@@ -126,15 +125,34 @@ const MainControl = () => {
     }
   }
 
-  const dispatch = useDispatch()
-  updateStateStatus()
-  console.log(mode)
-  if (mode == 'light') {
-    setJoyMode(mode === 'dark' ? 'light' : 'dark')
-    setMaterialMode(mode === 'dark' ? 'light' : 'dark')
+  function marginVictoryGrid(){
+    var cards = []
+    swingStateList.forEach((name) => {
+      cards.push(<Grid><Card size="sm" variant='soft'><MarginOfVictoryInput key={stateStatus.stateStatus[updatedState + " margin"]} title={name} stateName={name}></MarginOfVictoryInput></Card></Grid>)
+    })
+    return (
+      <Box style={{ overflow: 'auto' }}
+        sx={{ height: { xs: "50vh", md: "75vh" } }}
+      >
+        <Grid container justifyContent="center" spacing={1}
+          sx={{
+            flexDirection: { xs: "row", md: "column" },
+            flexWrap: { xs: "wrap", md: "nowrap" },
+          }}>
+          {cards}
+        </Grid>
+      </Box>
+    )
   }
 
+  const dispatch = useDispatch()
+  updateStateStatus()
+
+
+
   return (
+    // <SelectorListView stateList={stateList.concat(congressionalElectoralDistricts)}></SelectorListView>
+
     <Container maxWidth={false} disableGutters sx={{
       bgcolor: 'background.paper',
       height: '100%',
@@ -166,7 +184,7 @@ const MainControl = () => {
               customize={customize(stateStatus)}
             />
           </Grid>
-          <Tabs sx={{mt: "5vh",}}>
+          <Tabs sx={{mt: "5vh"}}>
             <TabList
               tabFlex={"auto"}
               disableUnderline
@@ -193,12 +211,29 @@ const MainControl = () => {
                 disableIndicator>
                 All States
               </Tab>
+              <Tab
+                variant="plain"
+                color="neutral"
+                disableIndicator>
+                Margin of Victory
+              </Tab>
             </TabList>
             <TabPanel value={0}>
               <SelectorListView stateList={smallStateList}></SelectorListView>
             </TabPanel>
             <TabPanel value={1}>
               <SelectorListView stateList={stateList.concat(congressionalElectoralDistricts)}></SelectorListView>
+            </TabPanel>
+            <TabPanel value={2}>
+
+              {marginVictoryGrid()}
+
+
+
+
+
+
+
             </TabPanel>
           </Tabs>
         </Grid>

@@ -25,12 +25,10 @@ const FillSafeStates: FC<FillSafeStatesProps> = () => {
   const dispatch = useDispatch()
 
   function closeWarningHandler() {
-    console.log("close warning")
     setWarningOpen(false)
   }
 
   function updateStateDefault() {
-    console.log("update state default")
     for(var i=0; i<democratStates.length; ++i){
       dispatch(specifyStateStatus({stateName:democratStates[i], politicalParty:"D"}))
     }
@@ -40,7 +38,6 @@ const FillSafeStates: FC<FillSafeStatesProps> = () => {
   }
 
   function updateStateDefaultToEmpty() {
-    console.log("update state default")
     for(var i=0; i<democratStates.length; ++i){
       dispatch(specifyStateStatus({stateName:democratStates[i], politicalParty:"N"}))
     }
