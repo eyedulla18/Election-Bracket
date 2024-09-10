@@ -19,6 +19,8 @@ export function submitMap(state: any) {
 
     mapJson["email"] = state.stateStatus["email"]
 
+    console.log("submit body", mapJson)
+
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

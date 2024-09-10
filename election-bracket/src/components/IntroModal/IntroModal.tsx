@@ -28,8 +28,8 @@ const IntroModal: FC<IntroModalProps> = (props) => {
           Welcome!
         </Typography>
         <Typography id="modal-desc" textColor="text.tertiary">
-        Click on a state to predict the presidential winner. Use the "fill solid states" toggle
-         to automatically fill non-swing states. Predict vote breakdowns in swing states as 
+        Click on a state to predict the presidential winner. Some default states are filled in, 
+         but this can be toggled in settings. Predict vote breakdowns in swing states as 
          tiebreakers. For Nebraska and Maine, choose winners for each district and the state.
         </Typography>
       </Sheet>

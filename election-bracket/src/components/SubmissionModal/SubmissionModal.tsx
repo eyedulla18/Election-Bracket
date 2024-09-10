@@ -29,13 +29,13 @@ const SubmissionModal: FC<SubmissionModalProps> = (props) => {
 
   function handleInputChange(event) {
     setEmail(event.target.value)
+    dispatch(updateEmail({ email: event.target.value }))
   }
 
   function submitClickHandler(event){
     event.preventDefault();
     console.log("submit")
     setSubmissionRequestLoading(true)
-    dispatch(updateEmail({ email: email }))
     submitMap(currentState)
       .then(response => {
         console.log(response)

@@ -4,7 +4,7 @@ import { getSubmission } from '../../common-library/requestHandler.ts'
 import { useEffect, useState } from 'react';
 import { stateList } from '../../common-library/stateList.ts';
 import { politicalParties } from '../../common-library/political-parties.js';
-import { Grid } from '@mui/joy';
+import { Grid, Typography } from '@mui/joy';
 import USAMap from '../USAMap/USAMap';
 import CongressionalDistrictStatus from '../CongressionalDistrictStatus/CongressionalDistrictStatus.tsx';
 import { congressionalElectoralDistricts } from '../../common-library/congressionalElectoralStates.ts'
@@ -25,6 +25,8 @@ const LoadMap: FC<LoadMapProps> = () => {
   let [searchParams, setSearchParams] = useSearchParams();
   let [submissionSuccess, setSubmissionSuccess] = useState(false)
   var successParam = false
+  let [errorState, setErrorState] = useState(false)
+
 
   function successSnackbar() {
     return (
@@ -43,6 +45,24 @@ const LoadMap: FC<LoadMapProps> = () => {
         Submission Successful!
       </Snackbar>
     )
+  }
+
+  function failureSnackbar() {
+    return (
+      <Snackbar
+        open={errorState}
+        color="danger"
+        size="lg"
+        variant="solid"
+        onClose={(event, reason) => {
+          console.log(event)
+          console.log(reason)
+          setErrorState(false)
+        }}
+      >
+        Load Failed. Submission may not exist or did not upload properly. 
+      </Snackbar>
+    )  
   }
 
   function customize() {
@@ -81,10 +101,15 @@ const LoadMap: FC<LoadMapProps> = () => {
     if (searchParams.get("submissionId") !== null) {
       getSubmission(searchParams.get("submissionId")!)
         .then(response => {
-          console.log("use effect")
-          setFetchedState(response["submissionMap"])
-          setLoaded(true)
-          setSubmissionSuccess(true && successParam)
+          if(response.rc===0){
+            console.log("use effect")
+            setFetchedState(response["submissionMap"])
+            setLoaded(true)
+            setSubmissionSuccess(true && successParam)
+          }
+          else{
+            setErrorState(true)
+          }
         })
     }
     if(searchParams.get("submissionSuccess") !== null){
@@ -107,6 +132,15 @@ const LoadMap: FC<LoadMapProps> = () => {
     return (<VoteTracker currentState={fetchedState}></VoteTracker>)
   }
 
+  function titleContent(){
+    const email = fetchedState["email"]
+    if(email!=""){
+      return email+"'s submision"
+    }
+
+  }
+
+  console.log(errorState)
   return (
     <Container maxWidth={false} disableGutters sx={{
       bgcolor: 'background.paper',
@@ -114,11 +148,12 @@ const LoadMap: FC<LoadMapProps> = () => {
       minHeight: '100vh',
       py: '3%'
     }}>
-      {!loaded && (<CircularProgress sx={{
+      {!loaded && !errorState && (<CircularProgress sx={{
         position: 'absolute', left: '50%', top: '50%',
         transform: 'translate(-50%, -50%)'
       }} />)}
       {renderHeader()}
+      {failureSnackbar()}
       {loaded && (<Grid container direction="row" sx={{
         justifyContent: "center",
         alignItems: "center",
@@ -133,6 +168,9 @@ const LoadMap: FC<LoadMapProps> = () => {
       <Grid>
         <MarginTable swingStateInfo={swingStateInfo()}></MarginTable>
       </Grid>
+      {<Typography color="neutral" level="title-sm">
+        {titleContent()}
+      </Typography>}
     </Grid>)}
     </Container>
   )

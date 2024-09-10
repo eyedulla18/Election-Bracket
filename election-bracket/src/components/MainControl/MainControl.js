@@ -178,7 +178,7 @@ const MainControl = () => {
               customize={customize(stateStatus)}
             />
           </Grid>
-          <Tabs>
+          <Tabs sx={{mt:"4vh"}}>
             <TabList
               tabFlex={"auto"}
               disableUnderline

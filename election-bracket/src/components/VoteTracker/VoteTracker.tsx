@@ -21,12 +21,12 @@ const VoteTracker: FC<VoteTrackerProps> = (props) => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" elevation={0} style={{ background: 'transparent', boxShadow: 'none' }} sx={{ mt: "4vh" }}>
-        <Link to='/'>
-          <Box sx={{ ml: "2vw" }}>
-            <img width="100vw" src={ElectoGuessLogo} alt="Electo Guess logo" onClick={() => { console.log("logo clicked") }}></img>
+      <AppBar position="relative" elevation={0} style={{ background: 'transparent', boxShadow: 'none'}}>
+          <Box sx={{ ml: "2vw", mt:"2vh" }}>
+          <Link to='/'>
+            <img width="100vw" src={ElectoGuessLogo} alt="Electo Guess logo"></img>
+            </Link>
           </Box>
-        </Link>
       </AppBar>
 
       <AppBar position="fixed" elevation={0} style={{ background: 'transparent', boxShadow: 'none' }} sx={{ mt: "4vh" }}>
@@ -34,7 +34,7 @@ const VoteTracker: FC<VoteTrackerProps> = (props) => {
           direction="row"
           spacing={1}
           sx={{
-            justifyContent: "space-evenly",
+            justifyContent: {xs:"flex-end", md:"space-evenly"},
             alignItems: "center",
             color: 'text.contrastText'
           }}
