@@ -68,7 +68,8 @@ export const stateSlice = createSlice({
     "North Carolina margin": 99,
     "Pennsylvania margin": 99,
     "Wisconsin margin": 99,
-    fillSolidState: true
+    fillSolidState: true,
+    email:""
 
   },
   reducers: {
@@ -116,12 +117,15 @@ export const stateSlice = createSlice({
     updateFillSolidState: (state) => {
       console.log("updating fill solid state")
       state.fillSolidState = !state.fillSolidState
+    },
+    updateEmail: (state, action: PayloadAction<{email:string}>) => {
+      state.email = action.payload.email
     }
 
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { nextStateStatus, specifyStateStatus, updateVotePercentage, updateFillSolidState, updateMarginofVictory } = stateSlice.actions
+export const { updateEmail, nextStateStatus, specifyStateStatus, updateVotePercentage, updateFillSolidState, updateMarginofVictory } = stateSlice.actions
 
 export default stateSlice.reducer

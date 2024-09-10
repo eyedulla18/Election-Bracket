@@ -1,20 +1,6 @@
 import { stateList } from "./stateList.ts";
 import { congressionalElectoralDistricts } from "./congressionalElectoralStates.ts"
 import {swingStateList} from "./swingStateList.ts"
-export function testApiCall() {
-    // https://2r7fhg4206.execute-api.us-east-1.amazonaws.com/test
-    fetch("https://2r7fhg4206.execute-api.us-east-1.amazonaws.com/test")
-        .then(response => {
-            console.log(response.json)
-            return response.json()
-        })
-        .then(data => {
-            console.log(data)
-        }).catch(error => {
-            console.error("eashan error")
-            console.error('Error:', error);
-        });
-}
 
 export function submitMap(state: any) {
     var mapJson = {}
@@ -24,7 +10,6 @@ export function submitMap(state: any) {
     })
 
     congressionalElectoralDistricts.forEach((districtName) => {
-        console.log(districtName)
         mapJson[districtName] = state.stateStatus[districtName]
     })
 
@@ -32,21 +17,46 @@ export function submitMap(state: any) {
         mapJson[swingState+" margin"] = state.stateStatus[swingState+" margin"]
     })
 
+    mapJson["email"] = state.stateStatus["email"]
 
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Origin':"http://localhost:3000" },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ submissionData: mapJson })
     };
-    fetch("https://2r7fhg4206.execute-api.us-east-1.amazonaws.com/submitmap", requestOptions)
+    return fetch("https://2r7fhg4206.execute-api.us-east-1.amazonaws.com/submitmap", requestOptions)
         .then(response => {
-            console.log(response.json)
-            return response.json()
+            if(response.ok){
+                return response.text()
+            }
         })
-        .then(data => {
-            console.log(data)
-        }).catch(error => {
-            console.error("eashan error")
+        .then(text => {
+            console.log(text)
+            return {"rc":0, "submissionId":text}
+        })
+        .catch(error => {
             console.error('Error:', error);
+            return {"rc":1}
+        });
+}
+
+export function getSubmission(submissionId:string){
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+    };    
+    return fetch("https://2r7fhg4206.execute-api.us-east-1.amazonaws.com/getSubmission?submissionId="+submissionId, requestOptions)
+        .then(response => {
+            if(response.ok){
+                return response.text()
+            }
+        })
+        .then(text => {
+            console.log(text)
+            return {"rc":0, "submissionMap":JSON.parse(text!)}
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            return {"rc":1}
         });
 }

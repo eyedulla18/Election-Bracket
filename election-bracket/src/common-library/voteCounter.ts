@@ -3,6 +3,9 @@ import { electoralVotesMap } from './electoralVotes.ts'
 import { politicalParties } from './political-parties'
 import { congressionalElectoralStateData, congressionalElectoralStatesList } from './congressionalElectoralStates.ts'
 export default function tallyCurrentResults(state){
+    if(state===undefined){
+        return {"Democrat":0, "Republican":0, "Third Party": 0, "None": 0}
+    }
     var democrat:number = 0
     var republican:number = 0
     var thirdParty:number = 0
@@ -10,8 +13,11 @@ export default function tallyCurrentResults(state){
 
     for(var i=0; i<stateList.length; ++i){
         const stateName = stateList[i]
+        if(!(stateName in state)){
+            continue
+        }
         const stateElectoralVotes = electoralVotesMap[stateName]
-        const partySelection = state.stateStatus[stateName]
+        const partySelection = state[stateName]
 
         if(partySelection==politicalParties.democrat){
             democrat += stateElectoralVotes
@@ -33,7 +39,7 @@ export default function tallyCurrentResults(state){
         const numberDistricts = congressionalElectoralStateData[specialState].numDistricts
         
         for(var district=1; district<=numberDistricts; ++district){
-            const districtPartySelection = state.stateStatus[specialState+district]
+            const districtPartySelection = state[specialState+district]
             if(districtPartySelection==politicalParties.democrat){
                 democrat += 1
             }

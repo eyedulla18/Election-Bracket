@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import USAMap from '../USAMap/USAMap';
 import { useSelector, useDispatch } from 'react-redux'
 import { nextStateStatus } from '../../reducers/stateStatus.ts';
@@ -14,7 +13,6 @@ import { swingStateList } from '../../common-library/swingStateList.ts';
 import CongressionalDistrictStatesModal from '../CongressionalDistrictStates/CongressionalDistrictStates.tsx';
 import { congressionalElectoralStatesList, congressionalElectoralStateData } from '../../common-library/congressionalElectoralStates.ts';
 import BottomAppBar from '../BottomAppBar/BottomAppBar.tsx';
-import Button from '@mui/joy/Button';
 import { Container } from '@mui/material';
 import { Card, Grid } from '@mui/joy';
 import { useColorScheme as useJoyColorScheme } from '@mui/joy/styles';
@@ -151,8 +149,6 @@ const MainControl = () => {
 
 
   return (
-    // <SelectorListView stateList={stateList.concat(congressionalElectoralDistricts)}></SelectorListView>
-
     <Container maxWidth={false} disableGutters sx={{
       bgcolor: 'background.paper',
       height: '100%',
@@ -163,17 +159,15 @@ const MainControl = () => {
       <IntroModal open={openInfoModal} setOpen={setOpenInfoModal}></IntroModal>
       {renderCongressionalElectoralModal()}
       {displaySwingStateModal(updatedState)}
-      <VoteTracker></VoteTracker>
+      <VoteTracker currentState={stateStatus.stateStatus}></VoteTracker>
       <BottomAppBar setOpenInfoModal={setOpenInfoModal} setOpenSettingsModal={setOpenSettingsModal} state={stateStatus}></BottomAppBar>
       <Stack
         direction="column"
         spacing={2}
-        sx={{
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+        justifyContent= "center"
+        alignItems= "flex-start"
       >
-        <Grid container direction={'row'} sx={{
+        <Grid container direction="row" sx={{
           justifyContent: "center",
           alignItems: "center",
         }}>
@@ -184,7 +178,7 @@ const MainControl = () => {
               customize={customize(stateStatus)}
             />
           </Grid>
-          <Tabs sx={{mt: "5vh"}}>
+          <Tabs>
             <TabList
               tabFlex={"auto"}
               disableUnderline
@@ -215,7 +209,7 @@ const MainControl = () => {
                 variant="plain"
                 color="neutral"
                 disableIndicator>
-                Margin of Victory
+                Margin of Victory %
               </Tab>
             </TabList>
             <TabPanel value={0}>
@@ -225,15 +219,7 @@ const MainControl = () => {
               <SelectorListView stateList={stateList.concat(congressionalElectoralDistricts)}></SelectorListView>
             </TabPanel>
             <TabPanel value={2}>
-
               {marginVictoryGrid()}
-
-
-
-
-
-
-
             </TabPanel>
           </Tabs>
         </Grid>

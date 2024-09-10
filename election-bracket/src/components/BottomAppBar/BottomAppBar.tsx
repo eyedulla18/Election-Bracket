@@ -7,7 +7,10 @@ import IconButton from '@mui/joy/IconButton';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { Stack } from '@mui/joy';
-import {testApiCall, submitMap} from '../../common-library/requestHandler.ts'
+import {submitMap} from '../../common-library/requestHandler.ts'
+import { useState } from 'react';
+import SubmissionModal from '../SubmissionModal/SubmissionModal.tsx';
+
 
 interface BottomAppBarProps {
   state: string
@@ -16,12 +19,13 @@ interface BottomAppBarProps {
 }
 
 const BottomAppBar: FC<BottomAppBarProps> = (props) => {
+  const [openSubmissionModal, setOpenSubmissionModal] = useState(false);
 
   function disabledButtonState() {
     if (props.state === undefined) {
       return false
     }
-    const results = tallyCurrentResults(props.state)
+    const results = tallyCurrentResults(props.state["stateStatus"])
     if (results.None == 0) {
       return false
     }
@@ -38,6 +42,7 @@ const BottomAppBar: FC<BottomAppBarProps> = (props) => {
   return (
     <AppBar elevation={0} position="fixed" color="primary" style={{ background: 'transparent' }}
       sx={{ top: 'auto', bottom: "4vh", right: "4vw", justifyContent: "space-evenly", alignItems: "end" }}>
+      <SubmissionModal open={openSubmissionModal} setOpen={setOpenSubmissionModal}></SubmissionModal>
       <Stack direction="row"
       >
         <IconButton onClick={()=>props.setOpenSettingsModal(true)}>
@@ -57,7 +62,7 @@ const BottomAppBar: FC<BottomAppBarProps> = (props) => {
           <span>
             <Button
               disabled={disabledButtonState()}
-              onClick={function () { submitMap(props.state)}}
+              onClick={function () { setOpenSubmissionModal(true)}}
               size="md"
               variant="solid"
             >

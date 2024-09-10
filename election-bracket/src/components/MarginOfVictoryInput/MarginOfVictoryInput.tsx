@@ -26,7 +26,7 @@ const MarginOfVictoryInput: FC<MarginOfVictoryInputProps> = (props) => {
       <Typography
         sx={{ color: 'text.contrastText', fontWeight: 'lg', fontSize: 'sm' }}
       >
-        {props.title ? props.title : "margin of victory"}
+        {props.title ? props.title : "margin of victory %"}
       </Typography>
       <Input
         type="number"

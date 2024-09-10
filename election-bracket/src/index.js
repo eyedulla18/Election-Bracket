@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import MainControl from './components/MainControl/MainControl';
+import LoadMap from './components/LoadMap/LoadMap.tsx';
+
 import store from './app/store'
 import { Provider } from 'react-redux'
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
@@ -13,8 +15,7 @@ import {
   THEME_ID as MATERIAL_THEME_ID,
 } from '@mui/material/styles';
 import { CssVarsProvider as JoyCssVarsProvider } from '@mui/joy/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-
+import { BrowserRouter, Routes, Route, HashRouter } from "react-router-dom";
 
 const materialTheme = materialExtendTheme({
   colorSchemes: {
@@ -45,7 +46,7 @@ var theme = extendTheme({
         background: {
           paper: '#000000',
           // level1: "#880808"
-          surface:"#0B0D0E"
+          surface: "#0B0D0E"
         },
       },
     },
@@ -61,7 +62,15 @@ root.render(
   <Provider store={store}>
     <MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
       <JoyCssVarsProvider defaultMode='dark' theme={theme}>
-        <MainControl></MainControl>
+        <HashRouter>
+          <Routes>
+            <Route path="/" element={<MainControl></MainControl>}></Route>
+            <Route path="/loadmap" element={<LoadMap></LoadMap>}></Route>
+          </Routes>
+          {/* <Routes>
+            <Route path="/loadmap" element={<LoadMap></LoadMap>}></Route>
+          </Routes> */}
+        </HashRouter>
       </JoyCssVarsProvider>
     </MaterialCssVarsProvider>
   </Provider>
