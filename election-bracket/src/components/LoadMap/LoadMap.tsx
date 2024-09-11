@@ -4,7 +4,7 @@ import { getSubmission } from '../../common-library/requestHandler.ts'
 import { useEffect, useState } from 'react';
 import { stateList } from '../../common-library/stateList.ts';
 import { politicalParties } from '../../common-library/political-parties.js';
-import { Grid, Typography } from '@mui/joy';
+import { Grid, Modal, ModalClose, Sheet, Typography } from '@mui/joy';
 import USAMap from '../USAMap/USAMap';
 import CongressionalDistrictStatus from '../CongressionalDistrictStatus/CongressionalDistrictStatus.tsx';
 import { congressionalElectoralDistricts } from '../../common-library/congressionalElectoralStates.ts'
@@ -14,6 +14,8 @@ import VoteTracker from '../VoteTracker/VoteTracker.tsx';
 import CircularProgress from '@mui/joy/CircularProgress';
 import Snackbar from '@mui/joy/Snackbar';
 import { Container } from '@mui/material';
+import Fab from '@mui/material/Fab';
+import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined';
 
 
 interface LoadMapProps { }
@@ -26,6 +28,8 @@ const LoadMap: FC<LoadMapProps> = () => {
   let [submissionSuccess, setSubmissionSuccess] = useState(false)
   var successParam = false
   let [errorState, setErrorState] = useState(false)
+  let [showCopyLinkSuccess, setShowCopyLinkSuccess] = useState(false)
+  let [showCompetitionModal, setShowCompetitionModal] = useState(false)
 
 
   function successSnackbar() {
@@ -35,7 +39,6 @@ const LoadMap: FC<LoadMapProps> = () => {
         autoHideDuration={7000}
         color="success"
         size="lg"
-        variant="solid"
         onClose={(event, reason) => {
           console.log(event)
           console.log(reason)
@@ -60,7 +63,7 @@ const LoadMap: FC<LoadMapProps> = () => {
           setErrorState(false)
         }}
       >
-        Load Failed. Submission may not exist or did not upload properly. 
+        Load Failed. Submission may not exist, did not upload properly, or exceeded threshold
       </Snackbar>
     )  
   }
@@ -83,7 +86,7 @@ const LoadMap: FC<LoadMapProps> = () => {
   }
   
   function districtInfo() {
-    var districtMap = {}
+    var districtMap = {"DC(3)": fetchedState["District of Columbia"]}
     congressionalElectoralDistricts.forEach(districtName => {
       districtMap[districtName] = fetchedState[districtName]
     })
@@ -117,6 +120,7 @@ const LoadMap: FC<LoadMapProps> = () => {
       successParam = true
     }
     else{
+      setShowCompetitionModal(true)
       console.log("success parameter NOT found")
     }
 
@@ -140,7 +144,69 @@ const LoadMap: FC<LoadMapProps> = () => {
 
   }
 
-  console.log(errorState)
+  function shareFab(){
+    return (
+      <Fab color="primary" aria-label="add" 
+      onClick={() => {
+        navigator.clipboard.writeText("https://electoguess.gg"+"/#/loadmap?submissionId="+searchParams.get("submissionId")!)
+        setShowCopyLinkSuccess(true)
+      }}
+      sx={{
+        margin: 0,
+        top: 'auto',
+        right: 20,
+        bottom: 20,
+        left: 'auto',
+        position: 'fixed'
+    }}>
+        <IosShareOutlinedIcon />
+      </Fab>
+    )
+  }
+
+  function copyLinkSnackbar(){
+    return(
+      <Snackbar
+        autoHideDuration={5000}
+        color="success"
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={showCopyLinkSuccess}
+        onClose={(event, reason) => {
+          setShowCopyLinkSuccess(false)
+        }}
+      sx={{textAlign:"center", display:'block'}}
+      >
+        Link copied to clipboard! Share your prediction with your friends!
+      </Snackbar>
+    )
+  }
+
+  function competitionModal(){
+    return (
+      <Modal open={showCompetitionModal} onClose={() => setShowCompetitionModal(false)} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Sheet
+          variant="outlined"
+          sx={{ maxWidth: 500, borderRadius: 'md', p: 3, boxShadow: 'lg' }}
+        >
+          <ModalClose variant="plain" sx={{ m: 1 }} />
+          <Typography
+            component="h2"
+            id="modal-title"
+            level="h4"
+            color='success'
+            sx={{ fontWeight: 'lg', mb: 1 }}
+          >
+            Welcome! Win $1,000!
+          </Typography>
+          <Typography id="modal-desc" color="neutral">
+            Submit your own map, and after election day, the most accurate submission will
+            receive $1,000! Click the icon on the top left to begin predicting.
+          </Typography>
+        </Sheet>
+      </Modal>
+    )
+  }
+
   return (
     <Container maxWidth={false} disableGutters sx={{
       bgcolor: 'background.paper',
@@ -148,17 +214,22 @@ const LoadMap: FC<LoadMapProps> = () => {
       minHeight: '100vh',
       py: '3%'
     }}>
+      {shareFab()}
       {!loaded && !errorState && (<CircularProgress sx={{
         position: 'absolute', left: '50%', top: '50%',
         transform: 'translate(-50%, -50%)'
       }} />)}
+
       {renderHeader()}
       {failureSnackbar()}
+      
       {loaded && (<Grid container direction="row" sx={{
         justifyContent: "center",
         alignItems: "center",
       }}>
+      {competitionModal()}
       {successSnackbar()}
+      {copyLinkSnackbar()}
       <Grid sx={{ pb:1}}>
         <USAMap customize={customize()} title={""}></USAMap>
         <Grid spacing={2} container justifyContent="center" sx={{ flexDirection: "row", flexWrap: "wrap" }}>

@@ -9,7 +9,7 @@ import Avatar from '@mui/joy/Avatar';
 import Fab from '@mui/material/Fab';
 import DemocraticIcon from "../../images/Democratic_Disc.png"
 import RepublicanIcon from "../../images/Republican_Disc.png"
-import GreenIcon from "../../images/Green_Disc.png"
+import GreenIcon from "../../images/third.png"
 import Stack from '@mui/joy/Stack';
 import Box from '@mui/joy/Box';
 
@@ -74,7 +74,7 @@ const StateRadioButton: FC<StateRadioButtonProps> = (props) => {
         onClick={()=>{
           dispatch(specifyStateStatus({ stateName: props.stateName, politicalParty: "3rd" }))
         }}>
-          <Avatar variant="solid" src={GreenIcon}></Avatar>
+          <Avatar variant="solid" src={GreenIcon}>3rd</Avatar>
         </Fab>
       </Stack>
     </Card>

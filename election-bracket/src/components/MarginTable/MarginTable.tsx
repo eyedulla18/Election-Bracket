@@ -3,7 +3,7 @@ import Table from '@mui/joy/Table';
 import Sheet from '@mui/joy/Sheet';
 import DemocraticIcon from "../../images/Democratic_Disc.png"
 import RepublicanIcon from "../../images/Republican_Disc.png"
-import GreenIcon from "../../images/Green_Disc.png"
+import GreenIcon from "../../images/third.png"
 import Avatar from '@mui/joy/Avatar';
 import { green } from '@mui/material/colors';
 import { politicalParties } from '../../common-library/political-parties.js';
